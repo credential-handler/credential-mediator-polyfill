@@ -1,0 +1,31 @@
+{
+  "name": "credential-mediator-polyfill",
+  "version": "0.0.1-0",
+  "description": "Credential Mediator Polyfill",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/digitalbazaar/credential-mediator-polyfill.git"
+  },
+  "author": {
+    "name": "Digital Bazaar, Inc.",
+    "email": "support@digitalbazaar.com",
+    "url": "http://digitalbazaar.com"
+  },
+  "bugs": {
+    "url": "https://github.com/digitalbazaar/credential-mediator-polyfill/issues"
+  },
+  "homepage": "https://github.com/digitalbazaar/credential-mediator-polyfill",
+  "dependencies": {
+    "localforage": "^1.5.0",
+    "web-request-rpc": "^0.0.2",
+    "web-request-mediator": "^0.0.3"
+  },
+  "bedrock": {
+    "browserDependencies": [
+      "localforage",
+      "web-request-rpc",
+      "web-request-mediator"
+    ]
+  }
+}
