@@ -9,7 +9,7 @@
 import {PermissionManager, WebRequestMediator, WebRequestHandlersService} from
   'web-request-mediator';
 
-import {CredentialChoicesService} from './CredentialChoicesService';
+import {CredentialHintsService} from './CredentialHintsService';
 import {CredentialRequestService} from './CredentialRequestService';
 
 let loaded;
@@ -38,13 +38,13 @@ export async function load({relyingOrigin, requestPermission, showRequest}) {
   credentialHandlersService.addEventListener('unregister', async event => {
     if(event.requestType === 'credential') {
       event.waitUntil(
-        CredentialChoicesService._destroy(event.registration));
+        CredentialHintsService._destroy(event.registration));
     }
   });
 
   wrm.server.define('credentialHandlers', credentialHandlersService);
   wrm.server.define('credentialStore', credentialStoreService);
-  wrm.server.define('credentialChoices', new CredentialChoicesService(
+  wrm.server.define('credentialHints', new CredentialHintsService(
     relyingOrigin, {permissionManager}));
 
   // connect to relying origin
@@ -52,19 +52,30 @@ export async function load({relyingOrigin, requestPermission, showRequest}) {
 
   // TODO: move to another file and/or move out of credentialRequestService?
   wrm.ui = {
-    async selectCredentialChoice(selection) {
-      return credentialRequestService._selectCredentialChoice(selection);
+    async selectCredentialHint(selection) {
+      return credentialRequestService._selectCredentialHint(selection);
     },
-    async matchCredentialChoices(credentialRequestOptions) {
+    async matchCredentialRequest(credentialRequestOptions) {
       // get all credential handler registrations
       const registrations = await WebRequestHandlersService
         ._getAllRegistrations('credential');
 
-      // find all matching credential choices
+      // find all matching credential hints
       const promises = [];
       registrations.forEach(url => promises.push(
-        CredentialChoicesService._matchCredentialRequest(
+        CredentialHintsService._matchCredentialRequest(
           url, credentialRequestOptions)));
+      return [].concat(...await Promise.all(promises));
+    },
+    async matchCredential(credential) {
+      // get all credential handler registrations
+      const registrations = await WebRequestHandlersService
+        ._getAllRegistrations('credential');
+
+      // find all matching credential hints
+      const promises = [];
+      registrations.forEach(url => promises.push(
+        CredentialHintsService._matchCredential(url, credential)));
       return [].concat(...await Promise.all(promises));
     }
   };
