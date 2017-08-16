@@ -10,7 +10,7 @@ import {PermissionManager, WebRequestMediator, WebRequestHandlersService} from
   'web-request-mediator';
 
 import {CredentialHintsService} from './CredentialHintsService';
-import {CredentialRequestService} from './CredentialRequestService';
+import {CredentialsContainerService} from './CredentialsContainerService';
 
 let loaded;
 export async function loadOnce(options) {
@@ -21,7 +21,8 @@ export async function loadOnce(options) {
 }
 
 // TODO: document
-export async function load({relyingOrigin, requestPermission, showRequest}) {
+export async function load(
+  {relyingOrigin, requestPermission, getCredential, storeCredential}) {
   const wrm = new WebRequestMediator(relyingOrigin);
 
   // define custom server API
@@ -30,8 +31,8 @@ export async function load({relyingOrigin, requestPermission, showRequest}) {
   permissionManager._registerPermission('credentialhandler');
   wrm.server.define('permissionManager', permissionManager);
 
-  const credentialRequestService = new CredentialRequestService(
-    relyingOrigin, {show: showRequest});
+  const credentialsContainerService = new CredentialsContainerService(
+    relyingOrigin, {get: getCredential, store: storeCredential});
 
   const credentialHandlersService = new WebRequestHandlersService(
     relyingOrigin, {permissionManager});
@@ -43,17 +44,17 @@ export async function load({relyingOrigin, requestPermission, showRequest}) {
   });
 
   wrm.server.define('credentialHandlers', credentialHandlersService);
-  wrm.server.define('credentialStore', credentialStoreService);
+  wrm.server.define('credentialsContainer', credentialsContainerService);
   wrm.server.define('credentialHints', new CredentialHintsService(
     relyingOrigin, {permissionManager}));
 
   // connect to relying origin
   const injector = await wrm.connect();
 
-  // TODO: move to another file and/or move out of credentialRequestService?
+  // TODO: move to another file and/or move out of credentialsContainerService?
   wrm.ui = {
     async selectCredentialHint(selection) {
-      return credentialRequestService._selectCredentialHint(selection);
+      return credentialsContainerService._selectCredentialHint(selection);
     },
     async matchCredentialRequest(credentialRequestOptions) {
       // get all credential handler registrations

@@ -45,7 +45,7 @@ export class CredentialHintsService extends SimpleContainerService {
       return {
         credentialHandler: handler,
         credentialHintKey: key,
-        CredentialHint: item
+        credentialHint: item
       };
     });
   }
@@ -77,7 +77,7 @@ export class CredentialHintsService extends SimpleContainerService {
       return {
         credentialHandler: handler,
         credentialHintKey: key,
-        CredentialHint: item
+        credentialHint: item
       };
     });
   }

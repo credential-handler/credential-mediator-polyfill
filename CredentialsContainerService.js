@@ -41,7 +41,7 @@ export class CredentialsContainerService {
     //   validation would only ever fail during client polyfill development
     // TODO: validate credentialRequestOptions
     return this._execute(
-      _get, {operationName: 'request', input: {credentialRequestOptions}});
+      this._get, {operationName: 'request', input: {credentialRequestOptions}});
   }
 
   async store(credential) {
@@ -147,7 +147,7 @@ async function _handleCredentialOperation(
 }
 
 function getTopLevelOrigin(relyingOrigin) {
-  return return (window.location.ancestorOrigins &&
+  return (window.location.ancestorOrigins &&
     window.location.ancestorOrigins.length > 0) ?
       window.location.ancestorOrigins[
         window.location.ancestorOrigins.length - 1] : relyingOrigin;
