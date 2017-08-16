@@ -69,14 +69,15 @@ export class CredentialsContainerService {
     let response;
     try {
       response = await fn.call(this, this._operationState);
-      // TODO: validate response as a CredentialResponse
+      // TODO: validate response as a WebCredential
       if(!response) {
-        throw new Error('Invalid CredentialResponse from credential handler.');
+        throw new Error('Invalid response from credential handler.');
       }
     } finally {
       // always clear pending operation
       this._operationState = null;
     }
+    return response;
   }
 
   // called by UI presenting `get` once a hint has been selected
