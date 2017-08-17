@@ -50,7 +50,8 @@ export class CredentialsContainerService {
     //   already done proper validation for the end user -- so in theory, this
     //   validation would only ever fail during client polyfill development
     // TODO: validate `credential` as WebCredential
-    return this._execute(_get, {operationName: 'store', input: {credential}});
+    return this._execute(
+      this._store, {operationName: 'store', input: {credential}});
   }
 
   async _execute(fn, options) {
