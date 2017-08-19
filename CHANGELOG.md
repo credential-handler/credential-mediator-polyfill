@@ -1,5 +1,7 @@
 # credential-mediator-polyfill ChangeLog
 
+## 0.1.0 - 2017-08-18
+
 ## 0.0.1 - 2017-08-18
 
 ### Added
