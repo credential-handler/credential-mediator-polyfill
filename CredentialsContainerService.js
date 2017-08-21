@@ -70,10 +70,8 @@ export class CredentialsContainerService {
     let response;
     try {
       response = await fn.call(this, this._operationState);
-      // TODO: validate response as a WebCredential
-      if(!response) {
-        throw new Error('Invalid response from credential handler.');
-      }
+      // TODO: validate response as a WebCredential or `null`
+      //   throw new Error('Invalid response from credential handler.');
     } finally {
       // always clear pending operation
       this._operationState = null;
