@@ -22,6 +22,25 @@ export class CredentialHintsService extends SimpleContainerService {
   }
 
   /**
+   * Gets a CredentialHint by its credential handler URL and its key.
+   *
+   * @param url the credential handler URL.
+   * @param key the CredentialHint key.
+   *
+   * @return a Promise that resolves to the CredentialHint or `null`.
+   */
+  async get(url, key) {
+    const hint = await super.get(url, key);
+    if(hint) {
+      // do not return fetched images
+      hint.icons.forEach(icon => {
+        delete icon.fetchedImage;
+      });
+    }
+    return hint;
+  }
+
+  /**
    * Return all CredentialHints for a credential handler that match the
    * given CredentialRequestOptions. The matches will be returned in an array
    * with the tuples:
@@ -122,6 +141,7 @@ function _validateImageObject(imageObject) {
   if(typeof imageObject.type !== 'string') {
     throw new TypeError('"icon.type" must be a string.');
   }
+  // TODO: ensure `imageObject.fetchedImage` is set and contains a data URL
 }
 
 function _validateCredentialType(credentialType) {
