@@ -1,5 +1,10 @@
 # credential-mediator-polyfill ChangeLog
 
+## 0.1.2 - 2017-08-24
+
+### Added
+- Add hook to enable customization of handler window.
+
 ## 0.1.1 - 2017-08-21
 
 ### Changed
