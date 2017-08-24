@@ -21,8 +21,13 @@ export async function loadOnce(options) {
 }
 
 // TODO: document
-export async function load(
-  {relyingOrigin, requestPermission, getCredential, storeCredential}) {
+export async function load({
+  relyingOrigin,
+  requestPermission,
+  getCredential,
+  storeCredential,
+  customizeHandlerWindow
+}) {
   const wrm = new WebRequestMediator(relyingOrigin);
 
   // define custom server API
@@ -32,7 +37,8 @@ export async function load(
   wrm.server.define('permissionManager', permissionManager);
 
   const credentialsContainerService = new CredentialsContainerService(
-    relyingOrigin, {get: getCredential, store: storeCredential});
+    relyingOrigin,
+    {get: getCredential, store: storeCredential, customizeHandlerWindow});
 
   const credentialHandlersService = new WebRequestHandlersService(
     relyingOrigin, {permissionManager});

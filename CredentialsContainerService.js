@@ -12,7 +12,11 @@ import * as rpc from 'web-request-rpc';
 const CREDENTIAL_OPERATION_TIMEOUT = 0;
 
 export class CredentialsContainerService {
-  constructor(relyingOrigin, {get = _abort, store = _abort} = {}) {
+  constructor(relyingOrigin, {
+    get = _abort,
+    store = _abort,
+    customizeHandlerWindow = null
+  } = {}) {
     if(!(relyingOrigin && typeof relyingOrigin === 'string')) {
       throw new TypeError('"relyingOrigin" must be a non-empty string.');
     }
@@ -26,6 +30,7 @@ export class CredentialsContainerService {
     this._relyingOrigin = relyingOrigin;
     this._get = get;
     this._store = store;
+    this._customizeHandlerWindow = customizeHandlerWindow;
 
     /* Note: Only one operation is permitted at a time. A more complex
        implementation that tracks this operation via `localForage` is
@@ -82,11 +87,16 @@ export class CredentialsContainerService {
   // called by UI presenting `get` once a hint has been selected
   async _selectCredentialHint(selection) {
     const operationState = this._operationState;
+    const customizeHandlerWindow = this._customizeHandlerWindow;
     const {credentialHandler, credentialHintKey} = selection;
     // Note: If an error is raised, it may be recoverable such that the
     //   `UI can allow the selection of another credential handler.
-    const credentialHandlerResponse = await _handleCredentialOperation(
-      {operationState, credentialHandler, credentialHintKey});
+    const credentialHandlerResponse = await _handleCredentialOperation({
+      operationState,
+      customizeHandlerWindow,
+      credentialHandler,
+      credentialHintKey
+    });
     // TODO: validate CredentialHandlerResponse
 
     return credentialHandlerResponse;
@@ -98,13 +108,18 @@ export class CredentialsContainerService {
  *
  * @param options the options to use:
  *          operationState the credential operation state information.
+ *          customizeHandlerWindow a function to customize the handler window.
  *          credentialHandler the credential handler URL.
  *          credentialHintKey the key for the selected credential hint.
  *
  * @return a Promise that resolves to a CredentialHandlerResponse.
  */
-async function _handleCredentialOperation(
-  {operationState, credentialHandler, credentialHintKey}) {
+async function _handleCredentialOperation({
+  operationState,
+  customizeHandlerWindow,
+  credentialHandler,
+  credentialHintKey
+}) {
   operationState.credentialHandler = {};
 
   console.log('loading credential handler: ' + credentialHandler);
@@ -113,7 +128,9 @@ async function _handleCredentialOperation(
   // try to load credential handler
   let loadError = null;
   try {
-    const injector = await appContext.createWindow(credentialHandler);
+    const injector = await appContext.createWindow(credentialHandler, {
+      customize: customizeHandlerWindow
+    });
     // enable ability to make calls on remote credential handler
     operationState.credentialHandler.api = injector.get('credentialHandler', {
       functions: [{
