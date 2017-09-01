@@ -9,8 +9,8 @@
 import {PermissionManager, WebRequestMediator, WebRequestHandlersService} from
   'web-request-mediator';
 
-import {CredentialHintsService} from './CredentialHintsService';
-import {CredentialsContainerService} from './CredentialsContainerService';
+import {CredentialHintsService} from './CredentialHintsService.js';
+import {CredentialsContainerService} from './CredentialsContainerService.js';
 
 let loaded;
 export async function loadOnce(options) {
