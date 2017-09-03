@@ -1,5 +1,10 @@
 # credential-mediator-polyfill ChangeLog
 
+## 0.1.3 - 2017-09-03
+
+### Fixed
+- Pass credential hint key as `hintKey`.
+
 ## 0.1.2 - 2017-08-24
 
 ### Added
