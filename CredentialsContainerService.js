@@ -156,7 +156,7 @@ async function _handleCredentialOperation({
       `running credential ${operationState.operationName} operation...`);
     credentialHandlerResponse = await operationState.credentialHandler.api[
       operationState.operationName](
-        Object.assign({credentialHintKey}, operationState.input));
+        Object.assign({hintKey: credentialHintKey}, operationState.input));
   } finally {
     appContext.close();
   }
