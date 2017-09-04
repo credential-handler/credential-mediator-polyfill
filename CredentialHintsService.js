@@ -60,7 +60,22 @@ export class CredentialHintsService extends SimpleContainerService {
   static async _matchCredentialRequest(url, credentialRequestOptions) {
     return SimpleContainerService._match(
       url, ITEM_TYPE, ({handler, key, item}) => {
-      // TODO: implement matching algorithm using `credentialRequestOptions`
+      // hint must support a `dataType` if `enabledTypes` is present
+      if(item.enabledTypes) {
+        let match = false;
+        const dataTypes = Object.keys(credentialRequestOptions.web);
+        for(let dataType of dataTypes) {
+          if(item.enabledTypes.includes(dataType)) {
+            match = true;
+            break;
+          }
+        }
+        if(!match) {
+          return false;
+        }
+      }
+      // TODO: implement any additional match algorithm using
+      // `credentialRequestOptions`?
       return {
         credentialHandler: handler,
         credentialHintKey: key,
@@ -89,10 +104,25 @@ export class CredentialHintsService extends SimpleContainerService {
   static async _matchCredential(url, credential) {
     return SimpleContainerService._match(
       url, ITEM_TYPE, ({handler, key, item}) => {
-      // TODO: hints can be potentially matched based on matching information
-      //   with the new WebCredential, e.g. if it's a `verifiableProfile` then
-      //   the subject ID in the hint "capabilities" would match that of
-      //   `credential.data.id`
+      // hint must support credential `dataType` if `enabledTypes` is present
+      if(item.enabledTypes &&
+        !item.enabledTypes.includes(credential.dataType)) {
+        return false;
+      }
+
+      // check `match` field on hint if present, otherwise hint matches
+      if('match' in item) {
+        const matches = item.match[credential.dataType];
+        if(matches) {
+          // TODO: support deep compare?
+          for(let key in matches) {
+            if(credential.data[key] !== matches[key]) {
+              return false;
+            }
+          }
+        }
+      }
+
       return {
         credentialHandler: handler,
         credentialHintKey: key,
@@ -120,11 +150,21 @@ function _validateCredentialHint(hint) {
     }
     hint.icons.forEach(_validateImageObject);
   }
-  if(hint.enabledTypes) {
-    if(!Array.isArray(hint.enabledTypes)) {
-      throw new TypeError('"hint.icons" must be an array.');
+  if(!Array.isArray(hint.enabledTypes)) {
+    throw new TypeError('"hint.enabledTypes" must be an array.');
+  }
+  hint.enabledTypes.forEach(_validateCredentialType);
+
+  if('match' in hint) {
+    if(typeof hint.match !== 'object') {
+      throw new TypeError('"hint.match" must be an object.');
     }
-    hint.enabledTypes.forEach(_validateCredentialType);
+    for(let key in hint.match) {
+      _validateCredentialType(key);
+      if(!(hint.match[key] && typeof hint.match[key] === 'object')) {
+        throw new TypeError('"hint.match" entries must be objects.');
+      }
+    }
   }
 }
 
