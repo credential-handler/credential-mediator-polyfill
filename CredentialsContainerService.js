@@ -122,7 +122,6 @@ async function _handleCredentialOperation({
 }) {
   operationState.credentialHandler = {};
 
-  console.log('loading credential handler: ' + credentialHandler);
   const appContext = new rpc.WebAppContext();
 
   // try to load credential handler
@@ -152,8 +151,6 @@ async function _handleCredentialOperation({
   // no load error at this point, execute remote credential operation
   let credentialHandlerResponse;
   try {
-    console.log(
-      `running credential ${operationState.operationName} operation...`);
     credentialHandlerResponse = await operationState.credentialHandler.api[
       operationState.operationName](Object.assign({
         hintKey: credentialHintKey,
