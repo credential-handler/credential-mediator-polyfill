@@ -155,8 +155,16 @@ async function _handleCredentialOperation({
     console.log(
       `running credential ${operationState.operationName} operation...`);
     credentialHandlerResponse = await operationState.credentialHandler.api[
-      operationState.operationName](
-        Object.assign({hintKey: credentialHintKey}, operationState.input));
+      operationState.operationName](Object.assign({
+        hintKey: credentialHintKey,
+        // TODO: salt+hash relying origin and send result, keeping `salt`
+        // private? ... then include salt in credentialHandlerResponse
+        credentialRequestOrigin: operationState.relyingOrigin
+      }, operationState.input));
+    if(credentialHandlerResponse) {
+      // TODO: add `salt` to response (response is a WebCredential)
+      //credentialHandlerResponse.originSalt = ...
+    }
   } finally {
     appContext.close();
   }
