@@ -1,5 +1,10 @@
 # credential-mediator-polyfill ChangeLog
 
+## 0.1.6 - 2017-09-04
+
+### Added
+- Support credential hint matching via `match`.
+
 ## 0.1.5 - 2017-09-04
 
 ### Fixed
