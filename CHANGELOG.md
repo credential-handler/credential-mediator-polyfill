@@ -1,5 +1,10 @@
 # credential-mediator-polyfill ChangeLog
 
+## 1.0.0 - 2018-07-20
+
+### Added
+- Use cookie-based storage in browsers with storage partitioning.
+
 ## 0.1.6 - 2017-09-04
 
 ### Added
