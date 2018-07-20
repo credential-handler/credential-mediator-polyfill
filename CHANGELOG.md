@@ -1,5 +1,7 @@
 # credential-mediator-polyfill ChangeLog
 
+## 1.0.1 - 2018-07-20
+
 ### Changed
 - Updated dependencies.
 
