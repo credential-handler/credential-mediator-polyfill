@@ -1,5 +1,7 @@
 # credential-mediator-polyfill ChangeLog
 
+## 1.1.0 - 2018-07-31
+
 ### Added
 - Add ability to cancel hint selection UI.
 
