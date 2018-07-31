@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2017-2018 Digital Bazaar, Inc. All rights reserved.
  */
-/* global navigator */
+/* global document, navigator */
 'use strict';
 
 import {
@@ -66,12 +66,15 @@ export async function load({
     relyingOrigin, {permissionManager}));
 
   // connect to relying origin
-  const injector = await wrm.connect();
+  await wrm.connect();
 
   // TODO: move to another file and/or move out of credentialsContainerService?
   wrm.ui = {
     async selectCredentialHint(selection) {
       return credentialsContainerService._selectCredentialHint(selection);
+    },
+    async cancelSelectCredentialHint() {
+      return credentialsContainerService._cancelSelectCredentialHint();
     },
     async matchCredentialRequest(credentialRequestOptions) {
       // get all credential handler registrations

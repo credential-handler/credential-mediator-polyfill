@@ -4,7 +4,7 @@
  *
  * Copyright (c) 2017 Digital Bazaar, Inc. All rights reserved.
  */
-/* global DOMException */
+/* global DOMException, window */
 'use strict';
 
 import * as rpc from 'web-request-rpc';
@@ -101,6 +101,13 @@ export class CredentialsContainerService {
 
     return credentialHandlerResponse;
   }
+
+  async _cancelSelectCredentialHint() {
+    if(this._operationState.appContext) {
+      this._operationState.canceled = true;
+      this._operationState.appContext.close();
+    }
+  }
 }
 
 /**
@@ -122,7 +129,7 @@ async function _handleCredentialOperation({
 }) {
   operationState.credentialHandler = {};
 
-  const appContext = new rpc.WebAppContext();
+  const appContext = operationState.appContext = new rpc.WebAppContext();
 
   // try to load credential handler
   let loadError = null;
@@ -162,6 +169,12 @@ async function _handleCredentialOperation({
       // TODO: add `salt` to response (response is a WebCredential)
       //credentialHandlerResponse.originSalt = ...
     }
+  } catch(e) {
+    if(operationState.canceled) {
+      throw new DOMException('Credential operation canceled.', 'AbortError');
+    } else {
+      throw e;
+    }
   } finally {
     appContext.close();
   }
@@ -176,6 +189,6 @@ function getTopLevelOrigin(relyingOrigin) {
 }
 
 async function _abort() {
-  // TODO: called when `get` is not implemented
+  // TODO: this function is only called when `get` is not implemented
   throw new Error('Not implemented.');
 }
