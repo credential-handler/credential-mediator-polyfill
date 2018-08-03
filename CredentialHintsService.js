@@ -2,7 +2,7 @@
  * A CredentialHintsService provides the implementation for the
  * CredentialHints instances on a particular remote origin.
  *
- * Copyright (c) 2017 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2017-2018 Digital Bazaar, Inc. All rights reserved.
  */
 'use strict';
 
@@ -61,27 +61,27 @@ export class CredentialHintsService extends SimpleContainerService {
     return SimpleContainerService._match(
       url, ITEM_TYPE, ({handler, key, item}) => {
       // hint must support a `dataType` if `enabledTypes` is present
-      if(item.enabledTypes) {
-        let match = false;
-        const dataTypes = Object.keys(credentialRequestOptions.web);
-        for(let dataType of dataTypes) {
-          if(item.enabledTypes.includes(dataType)) {
-            match = true;
-            break;
+        if(item.enabledTypes) {
+          let match = false;
+          const dataTypes = Object.keys(credentialRequestOptions.web);
+          for(const dataType of dataTypes) {
+            if(item.enabledTypes.includes(dataType)) {
+              match = true;
+              break;
+            }
+          }
+          if(!match) {
+            return false;
           }
         }
-        if(!match) {
-          return false;
-        }
-      }
-      // TODO: implement any additional match algorithm using
-      // `credentialRequestOptions`?
-      return {
-        credentialHandler: handler,
-        credentialHintKey: key,
-        credentialHint: item
-      };
-    });
+        // TODO: implement any additional match algorithm using
+        // `credentialRequestOptions`?
+        return {
+          credentialHandler: handler,
+          credentialHintKey: key,
+          credentialHint: item
+        };
+      });
   }
 
   /**
@@ -105,30 +105,30 @@ export class CredentialHintsService extends SimpleContainerService {
     return SimpleContainerService._match(
       url, ITEM_TYPE, ({handler, key, item}) => {
       // hint must support credential `dataType` if `enabledTypes` is present
-      if(item.enabledTypes &&
-        !item.enabledTypes.includes(credential.dataType)) {
-        return false;
-      }
+        if(item.enabledTypes &&
+          !item.enabledTypes.includes(credential.dataType)) {
+          return false;
+        }
 
-      // check `match` field on hint if present, otherwise hint matches
-      if('match' in item) {
-        const matches = item.match[credential.dataType];
-        if(matches) {
-          // TODO: support deep compare?
-          for(let key in matches) {
-            if(credential.data[key] !== matches[key]) {
-              return false;
+        // check `match` field on hint if present, otherwise hint matches
+        if('match' in item) {
+          const matches = item.match[credential.dataType];
+          if(matches) {
+            // TODO: support deep compare?
+            for(const key in matches) {
+              if(credential.data[key] !== matches[key]) {
+                return false;
+              }
             }
           }
         }
-      }
 
-      return {
-        credentialHandler: handler,
-        credentialHintKey: key,
-        credentialHint: item
-      };
-    });
+        return {
+          credentialHandler: handler,
+          credentialHintKey: key,
+          credentialHint: item
+        };
+      });
   }
 
   static async _destroy(url) {
@@ -159,7 +159,7 @@ function _validateCredentialHint(hint) {
     if(typeof hint.match !== 'object') {
       throw new TypeError('"hint.match" must be an object.');
     }
-    for(let key in hint.match) {
+    for(const key in hint.match) {
       _validateCredentialType(key);
       if(!(hint.match[key] && typeof hint.match[key] === 'object')) {
         throw new TypeError('"hint.match" entries must be objects.');
