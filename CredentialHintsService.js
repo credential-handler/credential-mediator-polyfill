@@ -60,7 +60,7 @@ export class CredentialHintsService extends SimpleContainerService {
   static async _matchCredentialRequest(url, credentialRequestOptions) {
     return SimpleContainerService._match(
       url, ITEM_TYPE, ({handler, key, item}) => {
-      // hint must support a `dataType` if `enabledTypes` is present
+        // hint must support a `dataType` if `enabledTypes` is present
         if(item.enabledTypes) {
           let match = false;
           const dataTypes = Object.keys(credentialRequestOptions.web);
@@ -104,7 +104,7 @@ export class CredentialHintsService extends SimpleContainerService {
   static async _matchCredential(url, credential) {
     return SimpleContainerService._match(
       url, ITEM_TYPE, ({handler, key, item}) => {
-      // hint must support credential `dataType` if `enabledTypes` is present
+        // hint must support credential `dataType` if `enabledTypes` is present
         if(item.enabledTypes &&
           !item.enabledTypes.includes(credential.dataType)) {
           return false;
