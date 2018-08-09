@@ -135,7 +135,9 @@ async function _handleCredentialOperation({
   let loadError = null;
   try {
     const injector = await appContext.createWindow(credentialHandler, {
-      customize: customizeHandlerWindow
+      customize: customizeHandlerWindow,
+      // 30 second timeout to load repository
+      timeout: 30000
     });
     // enable ability to make calls on remote credential handler
     operationState.credentialHandler.api = injector.get('credentialHandler', {
