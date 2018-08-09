@@ -1,5 +1,7 @@
 # credential-mediator-polyfill ChangeLog
 
+## 1.1.1 - 2018-08-08
+
 ### Changed
 - Update credential repo load timeout to 30 seconds.
 
