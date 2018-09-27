@@ -190,10 +190,9 @@ async function _handleCredentialOperation({
 }
 
 function getTopLevelOrigin(relyingOrigin) {
-  return (window.location.ancestorOrigins &&
-    window.location.ancestorOrigins.length > 0) ?
-      window.location.ancestorOrigins[
-        window.location.ancestorOrigins.length - 1] : relyingOrigin;
+  const ancestorOrigins = window.location.ancestorOrigins;
+  return (ancestorOrigins && ancestorOrigins.length > 0) ?
+    ancestorOrigins[ancestorOrigins.length - 1] : relyingOrigin;
 }
 
 async function _abort() {
