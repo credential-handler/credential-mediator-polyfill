@@ -1,5 +1,10 @@
 # credential-mediator-polyfill ChangeLog
 
+### Fixed
+- Make canceling credential handler interactions more
+  robust. Reset cancelation state and track cancelations
+  that occur while credential handlers are loading.
+
 ## 1.1.1 - 2018-08-08
 
 ### Changed

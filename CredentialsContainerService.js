@@ -106,6 +106,7 @@ export class CredentialsContainerService {
     if(this._operationState.appContext) {
       this._operationState.canceled = true;
       this._operationState.appContext.close();
+      this._operationState.appContext = null;
     }
   }
 }
@@ -128,6 +129,7 @@ async function _handleCredentialOperation({
   credentialHintKey
 }) {
   operationState.credentialHandler = {};
+  operationState.canceled = false;
 
   const appContext = operationState.appContext = new rpc.WebAppContext();
 
@@ -139,6 +141,9 @@ async function _handleCredentialOperation({
       // 30 second timeout to load repository
       timeout: 30000
     });
+    if(appContext.closed || operationState.canceled) {
+      throw new DOMException('Credential operation canceled.', 'AbortError');
+    }
     // enable ability to make calls on remote credential handler
     operationState.credentialHandler.api = injector.get('credentialHandler', {
       functions: [{
@@ -160,13 +165,14 @@ async function _handleCredentialOperation({
   // no load error at this point, execute remote credential operation
   let credentialHandlerResponse;
   try {
+    const params = Object.assign({
+      hintKey: credentialHintKey,
+      // TODO: salt+hash relying origin and send result, keeping `salt`
+      // private? ... then include salt in credentialHandlerResponse
+      credentialRequestOrigin: operationState.relyingOrigin
+    }, operationState.input);
     credentialHandlerResponse = await operationState.credentialHandler.api[
-      operationState.operationName](Object.assign({
-        hintKey: credentialHintKey,
-        // TODO: salt+hash relying origin and send result, keeping `salt`
-        // private? ... then include salt in credentialHandlerResponse
-        credentialRequestOrigin: operationState.relyingOrigin
-      }, operationState.input));
+      operationState.operationName](params);
     if(credentialHandlerResponse) {
       // TODO: add `salt` to response (response is a WebCredential)
       //credentialHandlerResponse.originSalt = ...
