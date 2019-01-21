@@ -1,5 +1,13 @@
 # credential-mediator-polyfill ChangeLog
 
+## 1.1.3 - 2019-01-21
+
+### Fixed
+- Do not require cookie-based storage in Firefox.
+
+### Changed
+- Use web-request-mediator 1.1.x.
+
 ## 1.1.2 - 2018-09-27
 
 ### Fixed
