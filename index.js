@@ -32,10 +32,10 @@ export async function load({
   storeCredential,
   customizeHandlerWindow
 }) {
-  // if browser supports Storage Access API, use cookies for storage until
-  // localStorage/IndexedDB is supported (required to ensure first party
-  // storage is available in the mediator)
-  if(typeof document.requestStorageAccess === 'function') {
+  // if browser supports Storage Access API and is not Firefox, use cookies
+  // for storage until localStorage/IndexedDB is supported (required to ensure
+  // first party storage is available in the mediator in Safari)
+  if(typeof document.requestStorageAccess === 'function' && !window.netscape) {
     await storage.setDriver(['cookieWrapper']);
   }
 
