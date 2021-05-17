@@ -12,6 +12,7 @@ import {
   WebRequestHandlersService,
   storage
 } from 'web-request-mediator';
+import {utils} from 'web-request-rpc';
 
 import {CredentialHintsService} from './CredentialHintsService.js';
 import {CredentialsContainerService} from './CredentialsContainerService.js';
@@ -98,9 +99,41 @@ export async function load({
       registrations.forEach(url => promises.push(
         CredentialHintsService._matchCredential(url, credential)));
       return [].concat(...await Promise.all(promises));
+    },
+    async registerCredentialHandler(handlerUrl, hint) {
+      // grant handler permission
+      const relyingOrigin = utils.parseUrl(handlerUrl).hostname;
+      const pm = new PermissionManager(relyingOrigin, {request: _granted});
+      pm._registerPermission('credentialhandler');
+      await pm.request({name: 'credentialhandler'});
+
+      // set registration
+      const requestType = 'credential';
+      handlerUrl = await WebRequestHandlersService._setRegistration(
+        requestType, handlerUrl);
+
+      // add default hint
+      await CredentialHintsService._set(handlerUrl, null, hint);
+    },
+    async unregisterCredentialHandler(handlerUrl) {
+      // remove handler permission
+      const relyingOrigin = utils.parseUrl(handlerUrl).hostname;
+      const pm = new PermissionManager(relyingOrigin);
+      pm._registerPermission('credentialhandler');
+      await pm.revoke({name: 'credentialhandler'});
+
+      // remove handler and its hint storage
+      const requestType = 'credential';
+      await WebRequestHandlersService._getHandlerStorage(
+        requestType, relyingOrigin).removeItem(handlerUrl);
+      await CredentialHintsService._destroy(handlerUrl);
     }
   };
 
   // TODO: exposed API TBD
   navigator.credentialMediator = wrm;
+}
+
+async function _granted() {
+  return {state: 'granted'};
 }

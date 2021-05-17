@@ -131,6 +131,11 @@ export class CredentialHintsService extends SimpleContainerService {
       });
   }
 
+  static async _set(url, key, hint) {
+    return SimpleContainerService._getStorage(url, ITEM_TYPE)
+      .setItem(key, hint);
+  }
+
   static async _destroy(url) {
     return SimpleContainerService._destroy(url, ITEM_TYPE);
   }
