@@ -1,6 +1,6 @@
 # credential-mediator-polyfill ChangeLog
 
-## 1.2.0 - 2021-05-xx
+## 1.2.0 - 2021-05-16
 
 ### Added
 - Exposed methods to enable the mediator itself to register/unregister
