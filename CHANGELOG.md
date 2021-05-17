@@ -1,6 +1,6 @@
 # credential-mediator-polyfill ChangeLog
 
-## 1.2.1 - 2021-05-xx
+## 1.2.1 - 2021-05-16
 
 ### Fixed
 - Fix origin when setting/removing permissions.
