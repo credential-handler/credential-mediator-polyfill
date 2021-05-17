@@ -102,7 +102,7 @@ export async function load({
     },
     async registerCredentialHandler(handlerUrl, hint) {
       // grant handler permission
-      const relyingOrigin = utils.parseUrl(handlerUrl).hostname;
+      const {origin: relyingOrigin} = utils.parseUrl(handlerUrl);
       const pm = new PermissionManager(relyingOrigin, {request: _granted});
       pm._registerPermission('credentialhandler');
       await pm.request({name: 'credentialhandler'});
@@ -117,7 +117,7 @@ export async function load({
     },
     async unregisterCredentialHandler(handlerUrl) {
       // remove handler permission
-      const relyingOrigin = utils.parseUrl(handlerUrl).hostname;
+      const {origin: relyingOrigin} = utils.parseUrl(handlerUrl);
       const pm = new PermissionManager(relyingOrigin);
       pm._registerPermission('credentialhandler');
       await pm.revoke({name: 'credentialhandler'});
