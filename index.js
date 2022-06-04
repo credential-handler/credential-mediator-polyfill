@@ -41,6 +41,7 @@ export async function load({
   }
 
   const wrm = new WebRequestMediator(relyingOrigin);
+  console.log('polyfill.load', {wrm})
 
   // define custom server API
   const permissionManager = new PermissionManager(
@@ -48,6 +49,8 @@ export async function load({
   permissionManager._registerPermission('credentialhandler');
   wrm.server.define('permissionManager', permissionManager);
 
+  console.log('credentialsContainerService', relyingOrigin,
+  {get: getCredential, store: storeCredential, customizeHandlerWindow})
   const credentialsContainerService = new CredentialsContainerService(
     relyingOrigin,
     {get: getCredential, store: storeCredential, customizeHandlerWindow});

@@ -60,6 +60,7 @@ export class CredentialsContainerService {
   }
 
   async _execute(fn, options) {
+    console.log('_execute', {fn, options})
     if(this._operationState) {
       throw new DOMException(
         'Another credential operation is already in progress.',
@@ -131,15 +132,28 @@ async function _handleCredentialOperation({
   operationState.credentialHandler = {};
   operationState.canceled = false;
 
+  console.log({
+    operationState,
+    customizeHandlerWindow,
+    credentialHandler,
+    credentialHintKey
+  })
   const appContext = operationState.appContext = new rpc.WebAppContext();
 
   // try to load credential handler
   let loadError = null;
   try {
+    console.log('create window', credentialHandler, {
+      customize: customizeHandlerWindow,
+      // 30 second timeout to load repository
+      // timeout: 30000,
+      timeout: 999 * 60 * 1000,
+    })
     const injector = await appContext.createWindow(credentialHandler, {
       customize: customizeHandlerWindow,
       // 30 second timeout to load repository
-      timeout: 30000
+      // timeout: 30000,
+      timeout: 999 * 60 * 1000,
     });
     if(appContext.closed || operationState.canceled) {
       throw new DOMException('Credential operation canceled.', 'AbortError');
