@@ -31,7 +31,8 @@ export async function load({
   requestPermission,
   getCredential,
   storeCredential,
-  customizeHandlerWindow
+  customizeHandlerWindow,
+  rpcServices = {}
 }) {
   // if browser supports Storage Access API and is not Firefox, use cookies
   // for storage until localStorage/IndexedDB is supported (required to ensure
@@ -65,6 +66,9 @@ export async function load({
   wrm.server.define('credentialsContainer', credentialsContainerService);
   wrm.server.define('credentialHints', new CredentialHintsService(
     relyingOrigin, {permissionManager}));
+  for(const [serviceName, service] of Object.entries(rpcServices)) {
+    wrm.server.define(serviceName, service);
+  }
 
   // connect to relying origin
   await wrm.connect();
