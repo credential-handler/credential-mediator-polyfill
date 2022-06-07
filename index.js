@@ -31,7 +31,7 @@ export async function load({
   requestPermission,
   getCredential,
   storeCredential,
-  customizeHandlerWindow,
+  getCredentialHandlerInjector,
   rpcServices = {}
 }) {
   // if browser supports Storage Access API and is not Firefox, use cookies
@@ -50,8 +50,11 @@ export async function load({
   wrm.server.define('permissionManager', permissionManager);
 
   const credentialsContainerService = new CredentialsContainerService(
-    relyingOrigin,
-    {get: getCredential, store: storeCredential, customizeHandlerWindow});
+    relyingOrigin, {
+      get: getCredential,
+      store: storeCredential,
+      getCredentialHandlerInjector
+    });
 
   const credentialHandlersService = new WebRequestHandlersService(
     relyingOrigin, {permissionManager});
