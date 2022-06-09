@@ -5,7 +5,7 @@
  * Copyright (c) 2017 Digital Bazaar, Inc. All rights reserved.
  */
 /* global DOMException, window */
-import * as rpc from 'web-request-rpc';
+import {WebAppContext} from 'web-request-rpc';
 
 const CREDENTIAL_OPERATION_TIMEOUT = 0;
 
@@ -134,7 +134,7 @@ async function _handleCredentialOperation({
   operationState.canceled = false;
 
   //  initialize app context
-  const appContext = operationState.appContext = new rpc.WebAppContext();
+  const appContext = operationState.appContext = new WebAppContext();
   // try to load credential handler
   let loadError = null;
   try {
@@ -153,6 +153,7 @@ async function _handleCredentialOperation({
       }]
     });
   } catch(e) {
+    console.error('Credential handler load failure:', e);
     loadError = e;
   }
 
