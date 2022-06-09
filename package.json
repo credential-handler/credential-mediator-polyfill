@@ -18,8 +18,8 @@
   "homepage": "https://github.com/digitalbazaar/credential-mediator-polyfill",
   "dependencies": {
     "localforage": "^1.5.0",
-    "web-request-rpc": "^1.0.3",
-    "web-request-mediator": "^1.2.0"
+    "web-request-rpc": "digitalbazaar/web-request-rpc#refactor",
+    "web-request-mediator": "digitalbazaar/web-request-mediator#refactor"
   },
   "bedrock": {
     "browserDependencies": [
