@@ -1,11 +1,9 @@
 /*!
  * Credential Mediator Polyfill.
  *
- * Copyright (c) 2017-2018 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2017-2022 Digital Bazaar, Inc. All rights reserved.
  */
 /* global document, navigator */
-'use strict';
-
 import {
   PermissionManager,
   WebRequestMediator,
@@ -27,7 +25,9 @@ export async function loadOnce(options) {
 
 // TODO: document
 export async function load({
-  relyingOrigin,
+  // use `credentialRequestOrigin` as external name to eliminate confusion
+  // over which origin the parameter refers to
+  credentialRequestOrigin: relyingOrigin,
   requestPermission,
   getCredential,
   storeCredential,
@@ -41,7 +41,10 @@ export async function load({
     await storage.setDriver(['cookieWrapper']);
   }
 
-  const wrm = new WebRequestMediator(relyingOrigin);
+  // relying origin for the web request mediator is the origin of the opener
+  // or parent window (value found in `document.referrer`)
+  const {origin} = utils.parseUrl(document.referrer);
+  const wrm = new WebRequestMediator(origin);
 
   // define custom server API
   const permissionManager = new PermissionManager(
