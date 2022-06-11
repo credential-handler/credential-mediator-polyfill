@@ -1,22 +1,24 @@
 /*!
- * A CredentialRequestService provides the implementation for
- * CredentialHint.discoverFromExternalSource for a particular remote origin.
- *
- * Copyright (c) 2017 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2017-2022 Digital Bazaar, Inc. All rights reserved.
  */
 /* global DOMException, window */
 import {WebAppContext} from 'web-request-rpc';
 
 const CREDENTIAL_OPERATION_TIMEOUT = 0;
 
+/* A CredentialRequestService provides the implementation for
+CredentialHint.discoverFromExternalSource for a particular remote origin. */
 export class CredentialsContainerService {
   constructor(relyingOrigin, {
     get = _abort,
     store = _abort,
     getCredentialHandlerInjector
   } = {}) {
-    if(!(relyingOrigin && typeof relyingOrigin === 'string')) {
-      throw new TypeError('"relyingOrigin" must be a non-empty string.');
+    if(!(relyingOrigin && (typeof relyingOrigin === 'string' ||
+      relyingOrigin.then))) {
+      throw new TypeError(
+        '"relyingOrigin" must be a non-empty string or a promise that ' +
+        'resolves to one.');
     }
     if(typeof get !== 'function') {
       throw new TypeError('"get" must be a function.');
@@ -69,8 +71,8 @@ export class CredentialsContainerService {
     }
 
     this._operationState = Object.assign({
-      topLevelOrigin: getTopLevelOrigin(this._relyingOrigin),
-      relyingOrigin: this._relyingOrigin,
+      topLevelOrigin: await this._relyingOrigin,
+      relyingOrigin: await this._relyingOrigin,
       credentialHandler: null
     }, options);
 
@@ -189,12 +191,6 @@ async function _handleCredentialOperation({
     appContext.close();
   }
   return credentialHandlerResponse;
-}
-
-function getTopLevelOrigin(relyingOrigin) {
-  const ancestorOrigins = window.location.ancestorOrigins;
-  return (ancestorOrigins && ancestorOrigins.length > 0) ?
-    ancestorOrigins[ancestorOrigins.length - 1] : relyingOrigin;
 }
 
 async function _abort() {
