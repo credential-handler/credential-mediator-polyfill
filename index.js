@@ -123,7 +123,7 @@ export async function load({
         requestType, handlerUrl);
 
       // add default hint
-      await CredentialHintsService._set(handlerUrl, null, hint);
+      await CredentialHintsService._set(handlerUrl, 'default', hint);
     },
     async unregisterCredentialHandler(handlerUrl) {
       // remove handler permission
