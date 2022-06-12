@@ -1,15 +1,12 @@
 /*!
- * A CredentialHintsService provides the implementation for the
- * CredentialHints instances on a particular remote origin.
- *
- * Copyright (c) 2017-2018 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2017-2022 Digital Bazaar, Inc. All rights reserved.
  */
-'use strict';
-
 import {SimpleContainerService} from 'web-request-mediator';
 
 const ITEM_TYPE = 'credentialHint';
 
+/* A CredentialHintsService provides the implementation for the
+CredentialHints instances on a particular remote origin. */
 export class CredentialHintsService extends SimpleContainerService {
   constructor(relyingOrigin, {permissionManager}) {
     super(relyingOrigin, {
@@ -20,6 +17,9 @@ export class CredentialHintsService extends SimpleContainerService {
       validateItem: _validateCredentialHint
     });
   }
+
+  // FIXME: change set() to be a no-op with a console.warn(); credential hints
+  // are no longer used; only `_set()` is used internally
 
   /**
    * Gets a CredentialHint by its credential handler URL and its key.
