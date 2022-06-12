@@ -5,6 +5,10 @@ import {SimpleContainerService} from 'web-request-mediator';
 
 const ITEM_TYPE = 'credentialHint';
 
+/* Note: The hints service has been deprecated for use by credential handler
+developers. It is only used by the mediator internally now. All previously
+public APIs have been converted into no-ops with console warnings. */
+
 /* A CredentialHintsService provides the implementation for the
 CredentialHints instances on a particular remote origin. */
 export class CredentialHintsService extends SimpleContainerService {
@@ -18,26 +22,32 @@ export class CredentialHintsService extends SimpleContainerService {
     });
   }
 
-  // FIXME: change set() to be a no-op with a console.warn(); credential hints
-  // are no longer used; only `_set()` is used internally
+  async delete() {
+    this._deprecateNotice();
+    return false;
+  }
 
-  /**
-   * Gets a CredentialHint by its credential handler URL and its key.
-   *
-   * @param url the credential handler URL.
-   * @param key the CredentialHint key.
-   *
-   * @return a Promise that resolves to the CredentialHint or `null`.
-   */
-  async get(url, key) {
-    const hint = await super.get(url, key);
-    if(hint) {
-      // do not return fetched images
-      hint.icons.forEach(icon => {
-        delete icon.fetchedImage;
-      });
-    }
-    return hint;
+  async get() {
+    this._deprecateNotice();
+    return null;
+  }
+
+  async keys() {
+    this._deprecateNotice();
+    return [];
+  }
+
+  async has() {
+    this._deprecateNotice();
+    return false;
+  }
+
+  async clear() {
+    this._deprecateNotice();
+  }
+
+  _deprecateNotice() {
+    console.warn('Credential hints are deprecated and no longer used.');
   }
 
   /**
