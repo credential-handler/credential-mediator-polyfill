@@ -39,6 +39,7 @@ export async function load({
   // if browser supports Storage Access API and is not Firefox, use cookies
   // for storage until localStorage/IndexedDB is supported (required to ensure
   // first party storage is available in the mediator in Safari)
+  // FIXME: remove cookie driver
   if(typeof document.requestStorageAccess === 'function' && !window.netscape) {
     await storage.setDriver(['cookieWrapper']);
   }
