@@ -15,6 +15,8 @@ import {utils} from 'web-request-rpc';
 import {CredentialHintsService} from './CredentialHintsService.js';
 import {CredentialsContainerService} from './CredentialsContainerService.js';
 
+export {PermissionManager};
+
 let loaded;
 export async function loadOnce(options) {
   if(loaded) {
