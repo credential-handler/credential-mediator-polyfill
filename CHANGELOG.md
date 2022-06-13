@@ -1,6 +1,6 @@
 # credential-mediator-polyfill ChangeLog
 
-## 2.0.0 - 2022-06-xx
+## 2.0.0 - 2022-06-13
 
 ### Changed
 - **BREAKING**: Deprecate hints and registration APIs and make them
