@@ -13,6 +13,9 @@
   API, not the mediator (for cases when the mediator needs to load
   additional windows, e.g. 1p windows for storage access).
 - **BREAKING**: Use updated `web-request*` libraries.
+- **BREAKING**: Allow additional `rpcServices` to be registered when
+  loading. This enables more 1p flows by allowing events to be proxied
+  to 1p windows, etc.
 
 ## 1.2.1 - 2021-05-16
 
