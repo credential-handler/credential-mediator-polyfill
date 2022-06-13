@@ -42,6 +42,10 @@ export class CredentialHintsService extends SimpleContainerService {
     return false;
   }
 
+  async set() {
+    this._deprecateNotice();
+  }
+
   async clear() {
     this._deprecateNotice();
   }

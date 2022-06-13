@@ -12,6 +12,7 @@ import {
 } from 'web-request-mediator';
 import {utils} from 'web-request-rpc';
 
+import {CredentialHandlersService} from './CredentialHandlersService.js';
 import {CredentialHintsService} from './CredentialHintsService.js';
 import {CredentialsContainerService} from './CredentialsContainerService.js';
 
@@ -62,7 +63,7 @@ export async function load({
       getCredentialHandlerInjector
     });
 
-  const credentialHandlersService = new WebRequestHandlersService(
+  const credentialHandlersService = new CredentialHandlersService(
     relyingOrigin, {permissionManager});
   credentialHandlersService.addEventListener('unregister', async event => {
     if(event.requestType === 'credential') {
