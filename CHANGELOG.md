@@ -1,5 +1,19 @@
 # credential-mediator-polyfill ChangeLog
 
+## 2.0.0 - 2022-06-xx
+
+### Changed
+- **BREAKING**: Deprecate hints and registration APIs and make them
+  ineffectual -- with an attempt to allow for existing behavior to
+  continue (note that use of these APIs was largely ineffectual in
+  the past, this just better formalizes it and warns devs).
+- **BREAKING**: Require `credentialRequestOrigin` instead of
+  `relyingOrigin` in the load API. This clarifies that the value that
+  should be passed is for the relying party site using the credentials
+  API, not the mediator (for cases when the mediator needs to load
+  additional windows, e.g. 1p windows for storage access).
+- **BREAKING**: Use updated `web-request*` libraries.
+
 ## 1.2.1 - 2021-05-16
 
 ### Fixed
