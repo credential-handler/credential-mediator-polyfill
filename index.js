@@ -37,10 +37,11 @@ export async function load({
   getCredentialHandlerInjector,
   rpcServices = {}
 }) {
-  // if browser supports Storage Access API and is not Firefox, use cookies
-  // for storage until localStorage/IndexedDB is supported (required to ensure
-  // first party storage is available in the mediator in Safari)
-  if(typeof document.requestStorageAccess === 'function' && !window.netscape) {
+  // if browser is brave or supports Storage Access API and is not Firefox, use
+  // cookies for storage until localStorage/IndexedDB is supported (required to
+  // ensure first party storage is available in the mediator in Safari)
+  if(navigator.brave ||
+    (typeof document.requestStorageAccess === 'function' && !window.netscape)) {
     await storage.setDriver(['cookieWrapper']);
   }
 
