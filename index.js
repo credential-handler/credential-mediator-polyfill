@@ -37,10 +37,17 @@ export async function load({
   getCredentialHandlerInjector,
   rpcServices = {}
 }) {
-  // if browser is brave or supports Storage Access API and is not Firefox, use
-  // cookies for storage until localStorage/IndexedDB is supported (required to
-  // ensure first party storage is available in the mediator in Safari)
-  if(navigator.brave ||
+  // if browser is brave, has no `localStorage`, or supports Storage Access API
+  // and is not Firefox, use cookies for storage until localStorage/IndexedDB
+  // is supported (required to ensure first party storage is available in the
+  // mediator in Safari)
+  let hasLocalStorage;
+  try {
+    hasLocalStorage = !!localStorage;
+  } catch(e) {
+    hasLocalStorage = false;
+  }
+  if(navigator.brave || !hasLocalStorage ||
     (typeof document.requestStorageAccess === 'function' && !window.netscape)) {
     await storage.setDriver(['cookieWrapper']);
   }
