@@ -1,6 +1,6 @@
 # credential-mediator-polyfill ChangeLog
 
-## 2.2.0 - 2022-06-xx
+## 2.2.0 - 2022-06-21
 
 ### Changed
 - Use cookie driver for storage when `localStorage` is not available.
