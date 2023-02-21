@@ -40,7 +40,10 @@ export async function load({
   // if browser is brave, has no `localStorage`, or supports Storage Access API
   // and is not Firefox, use cookies for storage until localStorage/IndexedDB
   // is supported (required to ensure first party storage is available in the
-  // mediator in Safari)
+  // mediator in Safari); notably, newer versions of Chrome have the Storage
+  // Access API but only partition IndexedDB and localStorage, not cookies, so
+  // this will also ensure those versions of Chrome use cookies to enable
+  // an integrated experience
   let hasLocalStorage;
   try {
     hasLocalStorage = !!localStorage;
