@@ -37,21 +37,22 @@ export async function load({
   getCredentialHandlerInjector,
   rpcServices = {}
 }) {
-  // if browser is brave, has no `localStorage`, or supports Storage Access API
-  // and is not Firefox, use cookies for storage until localStorage/IndexedDB
-  // is supported (required to ensure first party storage is available in the
-  // mediator in Safari); notably, newer versions of Chrome have the Storage
-  // Access API but only partition IndexedDB and localStorage, not cookies, so
-  // this will also ensure those versions of Chrome use cookies to enable
-  // an integrated experience
-  let hasLocalStorage;
+  /* If browser is a version of Chrome that has the Storage Access API, then
+  its storage is partitioned for IndexedDB and localStorage, but not for
+  cookies. Therefore, only the cookie driver is supported on that browser to
+  enable an integrated experience. All other platforms have access to IndexedDB,
+  localStorage, and cookie-based storage. Which is used will depend on the
+  browser's specific capabilities and whether the mediator, when accessing
+  storage, has been loaded in a first party or third party context. */
+  let isChrome;
   try {
-    hasLocalStorage = !!localStorage;
+    isChrome = navigator.userAgentData &&
+      navigator.userAgentData.brands.some(
+        ({brand}) => brand === 'Google Chrome');
   } catch(e) {
-    hasLocalStorage = false;
+    isChrome = false;
   }
-  if(navigator.brave || !hasLocalStorage ||
-    (typeof document.requestStorageAccess === 'function' && !window.netscape)) {
+  if(isChrome && typeof document.requestStorageAccess === 'function') {
     await storage.setDriver(['cookieWrapper']);
   } else {
     await storage.setDriver(

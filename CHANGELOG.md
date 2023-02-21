@@ -1,5 +1,16 @@
 # credential-mediator-polyfill ChangeLog
 
+## 3.0.0 - 2023-02-dd
+
+### Changed
+- **BREAKING**: Allow storage to use (in preference order) either IndexedDB,
+localStorage, or cookie-based driver in all browsers except versions of Chrome
+that have partitioned storage for IndexedDB and localStorage but unpartitioned
+cookie storage. This ensures that Chrome can continue to have a fully
+integrated UI via third party iframes, but all other browsers (as was already
+the case) will use first party dialogs to load the mediator when storage needs
+to be accessed.
+
 ## 2.2.1 - 2023-02-21
 
 ### Fixed
