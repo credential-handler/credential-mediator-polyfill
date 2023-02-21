@@ -1,6 +1,6 @@
 # credential-mediator-polyfill ChangeLog
 
-## 3.0.0 - 2023-02-dd
+## 3.0.0 - 2023-02-21
 
 ### Changed
 - **BREAKING**: Allow storage to use (in preference order) either IndexedDB,
