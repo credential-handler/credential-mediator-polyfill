@@ -50,6 +50,9 @@ export async function load({
   if(navigator.brave || !hasLocalStorage ||
     (typeof document.requestStorageAccess === 'function' && !window.netscape)) {
     await storage.setDriver(['cookieWrapper']);
+  } else {
+    await storage.setDriver(
+      ['asyncStorage', 'localStorageWrapper', 'cookieWrapper']);
   }
 
   // relying origin for the web request mediator is the origin of the opener

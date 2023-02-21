@@ -1,5 +1,10 @@
 # credential-mediator-polyfill ChangeLog
 
+## 2.2.1 - 2023-02-dd
+
+### Fixed
+- Ensure `cookieWrapper` is made available as a possible storage driver.
+
 ## 2.2.0 - 2022-06-21
 
 ### Changed
