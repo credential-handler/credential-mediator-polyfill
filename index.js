@@ -1,7 +1,7 @@
 /*!
  * Credential Mediator Polyfill.
  *
- * Copyright (c) 2017-2022 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2017-2023 Digital Bazaar, Inc. All rights reserved.
  */
 /* global document, navigator */
 import {
@@ -23,7 +23,8 @@ export async function loadOnce(options) {
   if(loaded) {
     return loaded;
   }
-  return loaded = await load(options);
+  loaded = load(options);
+  return loaded;
 }
 
 // TODO: document
