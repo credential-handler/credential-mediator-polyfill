@@ -1,6 +1,6 @@
 # credential-mediator-polyfill ChangeLog
 
-## 3.0.1 - 2023-02-dd
+## 3.0.1 - 2023-02-22
 
 ### Fixed
 - Ensure `loadOnce` only loads once.
