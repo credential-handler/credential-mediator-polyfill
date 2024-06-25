@@ -3,6 +3,7 @@
 ## 4.0.0 - 2024-xx-xx
 
 ### Changed
+- Use BSD-3-Clause license.
 - **BREAKING**: Change to module.
 - **BREAKING**: Update dependencies.
   - `web-request-rpc@3`
