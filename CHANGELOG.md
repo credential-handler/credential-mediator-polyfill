@@ -1,5 +1,13 @@
 # credential-mediator-polyfill ChangeLog
 
+## 4.0.0 - 2024-xx-xx
+
+### Changed
+- **BREAKING**: Change to module.
+- **BREAKING**: Update dependencies.
+  - `web-request-rpc@3`
+  - `web-request-mediator@3`
+
 ## 3.0.1 - 2023-02-22
 
 ### Fixed
