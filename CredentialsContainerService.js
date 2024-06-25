@@ -1,7 +1,7 @@
 /*!
- * Copyright (c) 2017-2022 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2017-2024 Digital Bazaar, Inc. All rights reserved.
  */
-/* global DOMException, window */
+/* global DOMException */
 import {WebAppContext} from 'web-request-rpc';
 
 const CREDENTIAL_OPERATION_TIMEOUT = 0;
@@ -118,13 +118,16 @@ export class CredentialsContainerService {
 /**
  * Loads a credential handler to handle a credential operation.
  *
- * @param options the options to use:
- *          operationState the credential operation state information.
- *          getCredentialHandlerInjector a function to get the handler injector.
- *          credentialHandler the credential handler URL.
- *          credentialHintKey the key for the selected credential hint.
+ * @param {object} options - The options to use.
+ * @param {object} options.operationState - The credential operation state
+ *   information.
+ * @param {Function} options.getCredentialHandlerInjector - A function to get
+ *   the handler injector.
+ * @param {string} options.credentialHandler - The credential handler URL.
+ * @param {string} options.credentialHintKey - The key for the selected
+ *   credential hint.
  *
- * @return a Promise that resolves to a CredentialHandlerResponse.
+ * @returns {Promise} Resolves to a CredentialHandlerResponse.
  */
 async function _handleCredentialOperation({
   operationState,

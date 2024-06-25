@@ -3,6 +3,9 @@
   "version": "3.0.2-0",
   "description": "Credential Mediator Polyfill",
   "main": "index.js",
+  "scripts": {
+    "lint": "eslint --ext .cjs,.js ."
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/digitalbazaar/credential-mediator-polyfill.git"
@@ -20,6 +23,11 @@
     "localforage": "^1.5.0",
     "web-request-rpc": "^2.0.0",
     "web-request-mediator": "^2.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-config-digitalbazaar": "^5.2.0",
+    "eslint-plugin-jsdoc": "^48.4.0"
   },
   "bedrock": {
     "browserDependencies": [
