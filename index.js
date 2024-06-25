@@ -1,14 +1,14 @@
 /*!
  * Credential Mediator Polyfill.
  *
- * Copyright (c) 2017-2023 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2017-2024 Digital Bazaar, Inc. All rights reserved.
  */
 /* global document, navigator */
 import {
   PermissionManager,
-  WebRequestMediator,
+  storage,
   WebRequestHandlersService,
-  storage
+  WebRequestMediator
 } from 'web-request-mediator';
 import {utils} from 'web-request-rpc';
 

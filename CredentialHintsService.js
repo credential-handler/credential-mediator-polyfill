@@ -1,5 +1,5 @@
 /*!
- * Copyright (c) 2017-2022 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2017-2024 Digital Bazaar, Inc. All rights reserved.
  */
 import {SimpleContainerService} from 'web-request-mediator';
 
@@ -54,6 +54,7 @@ export class CredentialHintsService extends SimpleContainerService {
     console.warn('Credential hints are deprecated and no longer used.');
   }
 
+  /* eslint-disable jsdoc/require-description-complete-sentence */
   /**
    * Return all CredentialHints for a credential handler that match the
    * given CredentialRequestOptions. The matches will be returned in an array
@@ -65,11 +66,12 @@ export class CredentialHintsService extends SimpleContainerService {
    *   credentialHint: <CredentialHint>
    * }
    *
-   * @param url the URL that identifies the credential handler to check.
-   * @param credentialRequestOptions the credential request options.
+   * @param {string} url - The URL that identifies the credential handler to
+   *   check.
+   * @param {object} credentialRequestOptions - The credential request options.
    *
-   * @return a Promise that resolves to an array of credential handler and
-   *           CredentialHint tuples.
+   * @returns {Promise} Resolves to an array of credential handler and
+   *   CredentialHint tuples.
    */
   static async _matchCredentialRequest(url, credentialRequestOptions) {
     return SimpleContainerService._match(
@@ -97,7 +99,9 @@ export class CredentialHintsService extends SimpleContainerService {
         };
       });
   }
+  /* eslint-enable jsdoc/require-description-complete-sentence */
 
+  /* eslint-disable jsdoc/require-description-complete-sentence */
   /**
    * Return all CredentialHints for a credential handler that match the
    * given WebCredential. The matches will be returned in an array with the
@@ -109,11 +113,12 @@ export class CredentialHintsService extends SimpleContainerService {
    *   credentialHint: <CredentialHint>
    * }
    *
-   * @param url the URL that identifies the credential handler to check.
-   * @param credential the WebCredential.
+   * @param {string} url - The URL that identifies the credential handler to
+   *   check.
+   * @param {object} credential - The WebCredential.
    *
-   * @return a Promise that resolves to an array of credential handler and
-   *           CredentialHint tuples.
+   * @returns {Promise} Resolves to an array of credential handler and
+   *   CredentialHint tuples.
    */
   static async _matchCredential(url, credential) {
     return SimpleContainerService._match(
@@ -144,6 +149,7 @@ export class CredentialHintsService extends SimpleContainerService {
         };
       });
   }
+  /* eslint-enable jsdoc/require-description-complete-sentence */
 
   static async _set(url, key, hint) {
     return SimpleContainerService._getStorage(url, ITEM_TYPE)
