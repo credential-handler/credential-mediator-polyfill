@@ -1,6 +1,6 @@
 # credential-mediator-polyfill ChangeLog
 
-## 4.0.0 - 2024-xx-xx
+## 4.0.0 - 2024-07-02
 
 ### Changed
 - Use BSD-3-Clause license.
