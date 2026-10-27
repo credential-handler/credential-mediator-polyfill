@@ -3,10 +3,9 @@
 ## 4.0.1 - 2026-10-xx
 
 ### Fixed
-- Match a credential handler whose hint accepts a protocol the relying party
-  offers (e.g., `interact`), whatever its `enabledTypes`. Requests made with
-  only an interaction URL carry no data type, so registered handlers never
-  matched them.
+- Match a credential handler whose hint either accepts a protocol the relying
+  party offers (e.g., `interact`) or whose hint's `enabledTypes` matches a
+  `dataType` offered.
 
 ## 4.0.0 - 2024-07-02
 
