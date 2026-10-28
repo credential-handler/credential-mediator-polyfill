@@ -1,6 +1,6 @@
 # credential-mediator-polyfill ChangeLog
 
-## 4.0.1 - 2026-10-xx
+## 4.0.1 - 2026-10-28
 
 ### Fixed
 - Match a credential handler whose hint either accepts a protocol the relying
